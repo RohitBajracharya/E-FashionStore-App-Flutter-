@@ -4,7 +4,7 @@ import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/common_widgets/custom_textfield.dart';
 import 'package:ecommerce_app/common_widgets/our_button.dart';
 import 'package:ecommerce_app/consts/consts.dart';
-import 'package:ecommerce_app/consts/lists.dart';
+import 'package:ecommerce_app/views/home_screen/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -143,7 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
         title: login,
         color: redColor,
         textColor: whiteColor,
-        onPress: () {},
+        onPress: () {
+          Get.to(const Home());
+        },
       ),
     );
   }

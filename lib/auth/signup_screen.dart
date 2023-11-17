@@ -2,6 +2,7 @@ import 'package:ecommerce_app/common_widgets/applogo_widgets.dart';
 import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/common_widgets/custom_textfield.dart';
 import 'package:ecommerce_app/consts/consts.dart';
+import 'package:ecommerce_app/controller/main_controller.dart';
 
 import '../common_widgets/our_button.dart';
 
@@ -13,6 +14,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  MainController mainController = Get.put(MainController());
   @override
   Widget build(BuildContext context) {
     return bgWidget(
@@ -36,7 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 20),
               //signup form
-              signupForm()
+              signupForm(),
             ],
           ),
         ),
@@ -90,32 +92,31 @@ class _SignupScreenState extends State<SignupScreen> {
 
   //login button
   Widget loginButton() {
-    return GestureDetector(
-      onTap: () {
-        Get.back();
-      },
-      child: RichText(
-        text: const TextSpan(
-          children: [
-            // already have an account text
-            TextSpan(
-              text: alreadyHaveAccount,
-              style: TextStyle(
-                fontFamily: bold,
-                color: fontGrey,
-              ),
-            ),
-            // login button
-            TextSpan(
-              text: login,
-              style: TextStyle(
-                fontFamily: bold,
-                color: redColor,
-              ),
-            ),
-          ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // already have an account text
+        const Text(
+          alreadyHaveAccount,
+          style: TextStyle(
+            fontFamily: bold,
+            color: fontGrey,
+          ),
         ),
-      ),
+        // login button
+        InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: const Text(
+            login,
+            style: TextStyle(
+              fontFamily: bold,
+              color: redColor,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -123,11 +124,13 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget signupButton() {
     return SizedBox(
       width: screenWidth - 50,
-      child: ourButton(
-        title: signup,
-        color: redColor,
-        textColor: whiteColor,
-        onPress: () {},
+      child: Obx(
+        () => ourButton(
+          title: signup,
+          color: mainController.isCheck?.value == true ? redColor : lightGrey,
+          textColor: mainController.isCheck?.value == true ? whiteColor : darkFontGrey,
+          onPress: () {},
+        ),
       ),
     );
   }
@@ -136,10 +139,15 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget termsNpolicy() {
     return Row(
       children: [
-        Checkbox(
-          checkColor: redColor,
-          value: false,
-          onChanged: (value) {},
+        Obx(
+          () => Checkbox(
+            activeColor: redColor,
+            checkColor: whiteColor,
+            value: mainController.isCheck?.value,
+            onChanged: (value) {
+              mainController.isCheck?.value = !mainController.isCheck!.value;
+            },
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(
@@ -149,28 +157,28 @@ class _SignupScreenState extends State<SignupScreen> {
                 TextSpan(
                   text: "I agree to the ",
                   style: TextStyle(
-                    fontFamily: bold,
+                    fontFamily: regular,
                     color: fontGrey,
                   ),
                 ),
                 TextSpan(
                   text: termAndCond,
                   style: TextStyle(
-                    fontFamily: bold,
+                    fontFamily: regular,
                     color: redColor,
                   ),
                 ),
                 TextSpan(
                   text: " & ",
                   style: TextStyle(
-                    fontFamily: bold,
+                    fontFamily: regular,
                     color: fontGrey,
                   ),
                 ),
                 TextSpan(
                   text: privacyPolicy,
                   style: TextStyle(
-                    fontFamily: bold,
+                    fontFamily: regular,
                     color: redColor,
                   ),
                 ),

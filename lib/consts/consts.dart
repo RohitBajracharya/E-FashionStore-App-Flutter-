@@ -4,6 +4,7 @@ export 'package:velocity_x/velocity_x.dart';
 
 export './colors.dart';
 export './images.dart';
+export './lists.dart';
 export './sizes.dart';
 export './strings.dart';
 export './styles.dart';

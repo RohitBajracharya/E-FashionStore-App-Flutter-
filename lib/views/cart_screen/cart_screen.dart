@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:ecommerce_app/consts/consts.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -6,7 +6,13 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.purple,
+      color: Colors.white,
+      child:const Center(
+        child: Text(
+          "Cart is Empty!",
+          style: TextStyle(fontFamily: semibold, color: darkFontGrey),
+        ),
+      ),
     );
   }
 }

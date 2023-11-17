@@ -55,3 +55,13 @@ const featuredImages1 = [imgS1, imgS2, imgS3];
 const featuredImages2 = [imgS4, imgS5, imgS6];
 const featuresTitles1 = [womenDress, girlsDress, girlsWatches];
 const featuresTitles2 = [boysGlasses, mobilePhone, tShirts];
+
+//categories list
+const categoriesList = [womenDress, menClothingFashion, compAccess, automobile, kidtoys, sports, jewelery, cellphone, furniture];
+const categoriesImages = [imgFc1, imgFc2, imgFc3, imgFc4, imgFc5, imgFc6, imgFc7, imgFc8, imgFc9];
+
+const itemDetailButtonList = [video, reviews, privacyPolicy, returnPolicy, supportPolicy];
+
+//profile button list
+const profileButtonsList = [orders, wishlist, messages];
+const profileButtonsIcon = [icOrder, icOrder, icMessages];

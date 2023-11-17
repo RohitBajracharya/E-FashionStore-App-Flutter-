@@ -38,3 +38,28 @@ const tShirts = "TShirts";
 const girlsDress = "Girls Dresses";
 const featuredProduct = "Featured Product";
 const allProduct = "All Products";
+
+//categories strings
+const womenClothing = "Women Clothing";
+const menClothingFashion = "Men Clothing & Fashion";
+const compAccess = "Computer & Accessories";
+const automobile = "Automobile";
+const kidtoys = "Kids & Toys";
+const sports = "Sports";
+const jewelery = "Jewelery";
+const cellphone = "Cellphone & Tab";
+const furniture = "Furniture";
+
+//item details strings
+const video = "Video";
+const reviews = "Reviews";
+const sellerpolicy = "Seller Policy";
+const returnPolicy = "Return Policy";
+const supportPolicy = "Support Policy";
+const productsyoumaylike = "Products you may also like";
+
+//profile string
+const logout = "Logout";
+const wishlist = "My Wishlist";
+const orders = "My Orders";
+const messages = "Messages";

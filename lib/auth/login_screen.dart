@@ -4,6 +4,7 @@ import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/common_widgets/custom_textfield.dart';
 import 'package:ecommerce_app/common_widgets/our_button.dart';
 import 'package:ecommerce_app/consts/consts.dart';
+import 'package:ecommerce_app/controller/auth_controller.dart';
 import 'package:ecommerce_app/views/home_screen/home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  var authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return bgWidget(
@@ -36,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 20),
               //login form
-              loginForm()
+              Obx(() => loginForm()),
             ],
           ),
         ),
@@ -63,10 +66,20 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         children: [
           //email textfield
-          customTextField(title: email, hint: emailHint),
+          customTextField(
+            title: email,
+            hint: emailHint,
+            isPass: false,
+            controller: authController.emailController,
+          ),
           const SizedBox(height: 5),
           //password textfield
-          customTextField(title: password, hint: passwordHint),
+          customTextField(
+            title: password,
+            hint: passwordHint,
+            isPass: true,
+            controller: authController.passwordController,
+          ),
           //forget password button
           forgetPassword(),
           const SizedBox(height: 5),
@@ -137,17 +150,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //login button
   Widget loginButton() {
-    return SizedBox(
-      width: screenWidth - 50,
-      child: ourButton(
-        title: login,
-        color: redColor,
-        textColor: whiteColor,
-        onPress: () {
-          Get.to(const Home());
-        },
-      ),
-    );
+    return authController.isLoading.value
+        ? const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(redColor),
+          )
+        : SizedBox(
+            width: screenWidth - 50,
+            child: ourButton(
+                title: login,
+                color: redColor,
+                textColor: whiteColor,
+                onPress: () async {
+                  authController.isLoading(true);
+                  await authController.login(context: context).then((value) {
+                    if (value != null) {
+                      VxToast.show(context, msg: loggedin);
+                      Get.to(() => const Home());
+                    } else {
+                      authController.isLoading(false);
+                    }
+                  });
+                }),
+          );
   }
 
   //forget password button

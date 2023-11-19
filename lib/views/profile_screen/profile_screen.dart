@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/auth/login_screen.dart';
 import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/consts/consts.dart';
+import 'package:ecommerce_app/controller/auth_controller.dart';
 import 'package:ecommerce_app/views/profile_screen/components/details_card.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -42,7 +44,7 @@ class ProfileScreen extends StatelessWidget {
             BoxShadow(
               color: Colors.black.withOpacity(0.1), // Shadow color with opacity
               blurRadius: 4.0, // Spread of the shadow
-              offset: Offset(0, 2), // Offset in the x, y direction
+              offset: const Offset(0, 2), // Offset in the x, y direction
             ),
           ],
         ),
@@ -117,7 +119,10 @@ class ProfileScreen extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: whiteColor),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              await Get.put(AuthController().signout(Get.context));
+              Get.offAll(() => const LoginScreen());
+            },
             child: const Text(
               logout,
               style: TextStyle(fontFamily: semibold, color: Colors.white),

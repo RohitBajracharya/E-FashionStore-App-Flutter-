@@ -63,3 +63,6 @@ const logout = "Logout";
 const wishlist = "My Wishlist";
 const orders = "My Orders";
 const messages = "Messages";
+
+const loggedin = "Logged in Succesfully";
+const loggedout = "Logged out Succesfully";

@@ -2,7 +2,8 @@ import 'package:ecommerce_app/common_widgets/applogo_widgets.dart';
 import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/common_widgets/custom_textfield.dart';
 import 'package:ecommerce_app/consts/consts.dart';
-import 'package:ecommerce_app/controller/main_controller.dart';
+import 'package:ecommerce_app/controller/auth_controller.dart';
+import 'package:ecommerce_app/views/home_screen/home.dart';
 
 import '../common_widgets/our_button.dart';
 
@@ -14,7 +15,13 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  MainController mainController = Get.put(MainController());
+  var authController = Get.put(AuthController());
+  //text controller
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var passwordRetypeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return bgWidget(
@@ -65,23 +72,23 @@ class _SignupScreenState extends State<SignupScreen> {
       child: Column(
         children: [
           //name textfield
-          customTextField(title: name, hint: nameHint),
+          customTextField(title: name, hint: nameHint, controller: nameController, isPass: false),
           const SizedBox(height: 5),
           //email textfield
-          customTextField(title: email, hint: emailHint),
+          customTextField(title: email, hint: emailHint, controller: emailController, isPass: false),
           const SizedBox(height: 5),
           //password textfield
-          customTextField(title: password, hint: passwordHint),
+          customTextField(title: password, hint: passwordHint, controller: passwordController, isPass: true),
           const SizedBox(height: 5),
           //retype password textfield
-          customTextField(title: retypePassword, hint: passwordHint),
+          customTextField(title: retypePassword, hint: passwordHint, controller: passwordRetypeController, isPass: true),
           //forget password button
           forgetPasswordButton(),
           const SizedBox(height: 5),
           //terms and policy
           termsNpolicy(),
           //signup button
-          signupButton(),
+          Obx(() => signupButton()),
           const SizedBox(height: 10),
           //login button
           loginButton(),
@@ -122,17 +129,49 @@ class _SignupScreenState extends State<SignupScreen> {
 
   //signup button
   Widget signupButton() {
-    return SizedBox(
-      width: screenWidth - 50,
-      child: Obx(
-        () => ourButton(
-          title: signup,
-          color: mainController.isCheck?.value == true ? redColor : lightGrey,
-          textColor: mainController.isCheck?.value == true ? whiteColor : darkFontGrey,
-          onPress: () {},
-        ),
-      ),
-    );
+    return authController.isLoading.value
+        ? const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(redColor),
+          )
+        : SizedBox(
+            width: screenWidth - 50,
+            child: Obx(
+              () => ourButton(
+                title: signup,
+                color: authController.isCheck?.value == true ? redColor : lightGrey,
+                textColor: authController.isCheck?.value == true ? whiteColor : darkFontGrey,
+                onPress: () async {
+                  // ignore: unrelated_type_equality_checks
+                  if (authController.isCheck != false) {
+                    authController.isLoading(true);
+                    try {
+                      await authController
+                          .signup(
+                        context: context,
+                        email: emailController.text,
+                        password: passwordController.text,
+                      )
+                          .then((value) {
+                        return authController.storeUserData(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          name: nameController.text,
+                        );
+                      }).then((value) {
+                        VxToast.show(context, msg: loggedin);
+                        Get.offAll(() => const Home());
+                      });
+                    } catch (e) {
+                      auth.signOut();
+                      // ignore: use_build_context_synchronously
+                      VxToast.show(context, msg: e.toString());
+                      authController.isLoading(false);
+                    }
+                  }
+                },
+              ),
+            ),
+          );
   }
 
   //terms and policy
@@ -143,9 +182,9 @@ class _SignupScreenState extends State<SignupScreen> {
           () => Checkbox(
             activeColor: redColor,
             checkColor: whiteColor,
-            value: mainController.isCheck?.value,
+            value: authController.isCheck?.value,
             onChanged: (value) {
-              mainController.isCheck?.value = !mainController.isCheck!.value;
+              authController.isCheck?.value = !authController.isCheck!.value;
             },
           ),
         ),

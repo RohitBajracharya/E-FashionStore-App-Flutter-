@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:ecommerce_app/common_widgets/bg_widget.dart';
@@ -62,14 +62,26 @@ class EditProfileScreen extends StatelessWidget {
               isPass: false,
               controller: profileController.nameController,
             ),
+            const SizedBox(height: 10),
+
+            //old password textfield
+            customTextField(
+              hint: passwordHint,
+              title: oldpass,
+              isPass: true,
+              controller: profileController.oldpasswordController,
+            ),
+            const SizedBox(height: 10),
+
             //password textfield
             customTextField(
               hint: passwordHint,
-              title: password,
+              title: newpass,
               isPass: true,
-              controller: profileController.passwordController,
+              controller: profileController.newpasswordController,
             ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 10),
             profileController.isLoading.value
                 ? const CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation(redColor),
@@ -80,12 +92,30 @@ class EditProfileScreen extends StatelessWidget {
                         color: redColor,
                         onPress: () async {
                           profileController.isLoading(true);
-                          await profileController.uploadProfileImage();
-                          await profileController.updateProfile(
-                            imgUrl: profileController.profileImageLink,
-                            name: profileController.nameController.text,
-                            password: profileController.passwordController.text,
-                          );
+                          //if image is not selected
+                          if (profileController.profileImagePath.value.isNotEmpty) {
+                            await profileController.uploadProfileImage();
+                          } else {
+                            profileController.profileImageLink = data['imageUrl'];
+                          }
+                          //if old password matches database
+                          if (data['password'] == profileController.oldpasswordController.text) {
+                            await profileController.changeAuthPassword(
+                              email: data['email'],
+                              password: profileController.oldpasswordController.text,
+                              newpassword: profileController.newpasswordController.text,
+                            );
+                            await profileController.updateProfile(
+                              imgUrl: profileController.profileImageLink,
+                              name: profileController.nameController.text,
+                              password: profileController.newpasswordController.text,
+                            );
+                            VxToast.show(context, msg: "Updated");
+                            Get.back();
+                          } else {
+                            VxToast.show(context, msg: "Wrong old password");
+                            profileController.isLoading(false);
+                          }
                         },
                         textColor: whiteColor,
                         title: "Save"),

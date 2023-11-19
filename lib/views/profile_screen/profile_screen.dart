@@ -167,7 +167,6 @@ class ProfileScreen extends StatelessWidget {
     return InkWell(
       onTap: () {
         profileController.nameController.text = data['name'];
-        profileController.passwordController.text = data['password'];
         Get.to(() => EditProfileScreen(data: data));
       },
       child: const Padding(

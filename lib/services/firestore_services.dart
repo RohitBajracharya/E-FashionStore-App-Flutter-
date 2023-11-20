@@ -5,4 +5,9 @@ class FiresstoreServices {
   static getUser(uid) {
     return firestore.collection(usersCollection).where('id', isEqualTo: uid).snapshots();
   }
+
+  //gets products according to category
+  static getProducts(category) {
+    return firestore.collection(productsCollection).where("p_category", isEqualTo: category).snapshots();
+  }
 }

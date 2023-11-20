@@ -14,80 +14,93 @@ class ItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: lightGrey,
-      appBar: appBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //swiper section
-                    imageSwiper(data),
-                    const SizedBox(height: 10),
-                    //title and details section
-                    Text(
-                      title!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: darkFontGrey,
-                        fontFamily: semibold,
+    var productController = Get.find<ProductController>();
+
+    return WillPopScope(
+      onWillPop: () async {
+        productController.resetValues();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: lightGrey,
+        appBar: appBar(),
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //swiper section
+                      imageSwiper(data),
+                      const SizedBox(height: 10),
+                      //title and details section
+                      Text(
+                        title!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: darkFontGrey,
+                          fontFamily: semibold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    //ratings
-                    ratings(data),
-                    const SizedBox(height: 10),
-                    //price
-                    price(data),
-                    const SizedBox(height: 10),
-                    // seller name and message box
-                    sellerNmessagebox(data),
-                    const SizedBox(height: 20),
-                    //color section
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //color
-                        colorSection(data),
-                        //quantity
-                        quantitySection(data),
-                        //total
-                        totalSection(data),
-                        const SizedBox(height: 10),
-                        //description
-                        descriptionSection(data),
-                        const SizedBox(height: 10),
-                        //button section
-                        buttonSection(data),
-                        const SizedBox(height: 10),
-                        //products you may like
-                        productYouMayLike(data),
-                      ],
-                    ).box.white.shadowSm.make(),
-                  ],
+                      const SizedBox(height: 10),
+                      //ratings
+                      ratings(data),
+                      const SizedBox(height: 10),
+                      //price
+                      price(data),
+                      const SizedBox(height: 10),
+                      // seller name and message box
+                      sellerNmessagebox(data),
+                      const SizedBox(height: 20),
+                      //color section
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //color
+                          colorSection(data),
+                          //quantity
+                          quantitySection(data),
+                          //total
+                          totalSection(data),
+                          const SizedBox(height: 10),
+                          //description
+                          descriptionSection(data),
+                          const SizedBox(height: 10),
+                          //button section
+                          buttonSection(data),
+                          const SizedBox(height: 10),
+                          //products you may like
+                          productYouMayLike(data),
+                        ],
+                      ).box.white.shadowSm.make(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          //add to cart
-          addToCardButton(data)
-        ],
+            //add to cart
+            addToCardButton(data, context),
+          ],
+        ),
       ),
     );
   }
 
-  SizedBox addToCardButton(data) {
+  //add to cart button
+  Widget addToCardButton(data, context) {
+    var productController = Get.find<ProductController>();
     return SizedBox(
       width: double.infinity,
       height: 60,
       child: ourButton(
         color: redColor,
-        onPress: () {},
+        onPress: () {
+          productController.addToCart(color: data['p_colors'][productController.colorIndex.value], context: context, img: data['p_images'][0], quantity: productController.quantity.value, sellername: data['p_seller'], title: data['p_name'], totalPrice: productController.totalPrice.value);
+          VxToast.show(context, msg: "Added to cart");
+        },
         textColor: whiteColor,
         title: "Add to cart",
       ),
@@ -430,7 +443,15 @@ class ItemDetails extends StatelessWidget {
 
 //appbar
   AppBar appBar() {
+    var productController = Get.find<ProductController>();
     return AppBar(
+      leading: IconButton(
+        onPressed: () {
+          productController.resetValues();
+          Get.back();
+        },
+        icon: const Icon(Icons.arrow_back),
+      ),
       title: Text(
         title!,
         style: const TextStyle(

@@ -64,6 +64,7 @@ class CategoryScreen extends StatelessWidget {
   //appbar
   AppBar appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: const Text(
         categories,
         style: TextStyle(

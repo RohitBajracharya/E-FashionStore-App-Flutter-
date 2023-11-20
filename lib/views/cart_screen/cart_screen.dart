@@ -50,7 +50,7 @@ class CartScreen extends StatelessWidget {
                 return ListTile(
                   leading: Image.network('${data[index]['p_images']}'),
                   title: Text(
-                    "${data[index]['title']}",
+                    "${data[index]['title']} (*${data[index]['quantity']})",
                     style: const TextStyle(
                       fontFamily: semibold,
                       fontSize: 16,

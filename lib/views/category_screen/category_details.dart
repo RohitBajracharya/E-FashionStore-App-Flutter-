@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/consts/consts.dart';
+import 'package:ecommerce_app/controller/product_controller.dart';
 import 'package:ecommerce_app/views/category_screen/item_details.dart';
 
 class CategoryDetails extends StatelessWidget {
@@ -18,6 +19,7 @@ class CategoryDetails extends StatelessWidget {
         body: Container(
           padding: const EdgeInsets.all(12.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //sub categories list
               subCategories(),
@@ -100,12 +102,13 @@ class CategoryDetails extends StatelessWidget {
 
   //sub categories list
   Widget subCategories() {
+    var productController = Get.find<ProductController>();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          6,
+          productController.subCat.length,
           (index) => Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -115,10 +118,10 @@ class CategoryDetails extends StatelessWidget {
             width: 120,
             height: 60,
             margin: const EdgeInsetsDirectional.symmetric(horizontal: 4.0),
-            child: const Center(
+            child: Center(
               child: Text(
-                "Baby Clothing",
-                style: TextStyle(
+                productController.subCat[index].toString(),
+                style: const TextStyle(
                   fontFamily: semibold,
                   color: darkFontGrey,
                   fontSize: 12,

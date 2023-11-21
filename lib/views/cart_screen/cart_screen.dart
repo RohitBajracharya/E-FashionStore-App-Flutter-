@@ -43,68 +43,90 @@ class CartScreen extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Image.network('${data[index]['p_images']}'),
-                  title: Text(
-                    "${data[index]['title']} (*${data[index]['quantity']})",
-                    style: const TextStyle(
-                      fontFamily: semibold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Rs ${data[index]['total_price']}",
-                    style: const TextStyle(
-                      color: redColor,
-                      fontFamily: semibold,
-                    ),
-                  ),
-                  trailing: const Icon(
-                    Icons.delete,
-                    color: redColor,
-                  ).onTap(() {
-                    FiresstoreServices.deleteCartItem(data[index].id);
-                  }),
-                );
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Total Price",
-                style: TextStyle(
-                  fontFamily: bold,
-                  color: darkFontGrey,
-                ),
-              ),
-              Obx(
-                () => Text(
-                  "Rs ${cartController.totalPrice.value}",
-                  style: const TextStyle(
-                    fontFamily: bold,
-                    color: redColor,
-                  ),
-                ),
-              ),
-            ],
-          ).box.padding(const EdgeInsets.all(12)).color(lightGolden).width(screenWidth - 60).roundedSM.make(),
+          //cart items
+          cartItems(data),
+          //total price
+          totalPrice(cartController).box.padding(const EdgeInsets.all(12)).color(lightGolden).width(screenWidth - 60).roundedSM.make(),
           const SizedBox(height: 10),
-          SizedBox(
-            width: screenWidth - 60,
-            child: ourButton(
+          //Shipping button
+          shippingButton(),
+        ],
+      ),
+    );
+  }
+
+  //Shipping button
+  Widget shippingButton() {
+    return SizedBox(
+      width: screenWidth - 60,
+      child: ourButton(
+        color: redColor,
+        onPress: () {},
+        textColor: whiteColor,
+        title: "Process to shipping",
+      ),
+    );
+  }
+
+  //total price
+  Widget totalPrice(CartController cartController) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          "Total Price",
+          style: TextStyle(
+            fontFamily: bold,
+            color: darkFontGrey,
+          ),
+        ),
+        Obx(
+          () => Text(
+            "Rs ${cartController.totalPrice.value}",
+            style: const TextStyle(
+              fontFamily: bold,
               color: redColor,
-              onPress: () {},
-              textColor: whiteColor,
-              title: "Pricess to shipping",
             ),
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  //cart items
+  Widget cartItems(data) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            //product image
+            leading: Image.network('${data[index]['p_images']}'),
+            //product title and quantity
+            title: Text(
+              "${data[index]['title']} (*${data[index]['quantity']})",
+              style: const TextStyle(
+                fontFamily: semibold,
+                fontSize: 16,
+              ),
+            ),
+            //product price
+            subtitle: Text(
+              "Rs ${data[index]['total_price']}",
+              style: const TextStyle(
+                color: redColor,
+                fontFamily: semibold,
+              ),
+            ),
+            //delete button
+            trailing: const Icon(
+              Icons.delete,
+              color: redColor,
+            ).onTap(() {
+              FiresstoreServices.deleteCartItem(data[index].id);
+            }),
+          );
+        },
       ),
     );
   }

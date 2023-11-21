@@ -125,6 +125,7 @@ const imgSlider3 = "assets/images/slider_3.png";
 const imgSlider4 = "assets/images/slider_4.png";
 const imgSslcommerz = "assets/images/sslcommerz.png";
 const imgStripe = "assets/images/stripe.png";
+const imgKhalti = "assets/images/khalti.png";
 const imgTwocheckout = "assets/images/twocheckout.png";
 const imgVogue = "assets/images/vogue.png";
 const imgWallet = "assets/images/wallet.png";

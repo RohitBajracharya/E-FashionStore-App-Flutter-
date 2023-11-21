@@ -3,6 +3,7 @@ import 'package:ecommerce_app/common_widgets/loading_indicator.dart';
 import 'package:ecommerce_app/consts/consts.dart';
 import 'package:ecommerce_app/controller/cart_controller.dart';
 import 'package:ecommerce_app/services/firestore_services.dart';
+import 'package:ecommerce_app/views/cart_screen/shipping_screen.dart';
 
 import '../../common_widgets/our_button.dart';
 
@@ -13,6 +14,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteColor,
+      bottomNavigationBar: shippingButton(),
       appBar: appBar(),
       body: StreamBuilder(
         stream: FiresstoreServices.getCart(currentUser!.uid),
@@ -39,6 +41,7 @@ class CartScreen extends StatelessWidget {
     var cartController = Get.put(CartController());
     var data = snapshot.data!.docs;
     cartController.calculateTotalPrice(data);
+    cartController.productSnapshot = data;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -48,8 +51,6 @@ class CartScreen extends StatelessWidget {
           //total price
           totalPrice(cartController).box.padding(const EdgeInsets.all(12)).color(lightGolden).width(screenWidth - 60).roundedSM.make(),
           const SizedBox(height: 10),
-          //Shipping button
-          shippingButton(),
         ],
       ),
     );
@@ -58,10 +59,12 @@ class CartScreen extends StatelessWidget {
   //Shipping button
   Widget shippingButton() {
     return SizedBox(
-      width: screenWidth - 60,
+      height: 60,
       child: ourButton(
         color: redColor,
-        onPress: () {},
+        onPress: () {
+          Get.to(() => const ShippingScreen());
+        },
         textColor: whiteColor,
         title: "Process to shipping",
       ),

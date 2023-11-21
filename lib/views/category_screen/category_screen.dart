@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/common_widgets/bg_widget.dart';
 import 'package:ecommerce_app/consts/consts.dart';
+import 'package:ecommerce_app/controller/product_controller.dart';
 import 'package:ecommerce_app/views/category_screen/category_details.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class CategoryScreen extends StatelessWidget {
 
   //category section
   Widget categoryContainer() {
+    var productController = Get.put(ProductController());
     return Container(
       padding: const EdgeInsets.all(12.0),
       child: GridView.builder(
@@ -32,6 +34,7 @@ class CategoryScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
+              productController.getSubCategories(categoriesList[index]);
               Get.to(() => CategoryDetails(title: categoriesList[index]));
             },
             child: Column(
@@ -61,6 +64,7 @@ class CategoryScreen extends StatelessWidget {
   //appbar
   AppBar appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: const Text(
         categories,
         style: TextStyle(

@@ -58,7 +58,7 @@ const featuresTitles2 = [boysGlasses, mobilePhone, tShirts];
 
 //categories list
 const categoriesList = [womenDress, menClothingFashion, compAccess, automobile, kidtoys, sports, jewelery, cellphone, furniture];
-const categoriesImages = [imgFc1, imgFc2, imgFc3, imgFc4, imgFc5, imgFc6, imgFc7, imgFc8, imgFc9];
+const categoriesImages = [imgS1, imgFc1, imgFc2, imgFc3, imgFc4, imgFc5, imgS11, imgFc6, imgFc9];
 
 const itemDetailButtonList = [video, reviews, privacyPolicy, returnPolicy, supportPolicy];
 

@@ -1,90 +1,106 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:ecommerce_app/common_widgets/our_button.dart';
 import 'package:ecommerce_app/consts/consts.dart';
+import 'package:ecommerce_app/controller/product_controller.dart';
 
 class ItemDetails extends StatelessWidget {
   final String? title;
+  final dynamic data;
   const ItemDetails({
     Key? key,
     required this.title,
+    required this.data,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: lightGrey,
-      appBar: appBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //swiper section
-                    imageSwiper(),
-                    const SizedBox(height: 10),
-                    //title and details section
-                    Text(
-                      title!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: darkFontGrey,
-                        fontFamily: semibold,
+    var productController = Get.find<ProductController>();
+
+    return WillPopScope(
+      onWillPop: () async {
+        productController.resetValues();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: lightGrey,
+        appBar: appBar(),
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //swiper section
+                      imageSwiper(data),
+                      const SizedBox(height: 10),
+                      //title and details section
+                      Text(
+                        title!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: darkFontGrey,
+                          fontFamily: semibold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    //ratings
-                    ratings(),
-                    const SizedBox(height: 10),
-                    //price
-                    price(),
-                    const SizedBox(height: 10),
-                    // seller name and message box
-                    sellerNmessagebox(),
-                    const SizedBox(height: 20),
-                    //color section
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //color
-                        colorSection(),
-                        //quantity
-                        quantitySection(),
-                        //total
-                        totalSection(),
-                        const SizedBox(height: 10),
-                        //description
-                        descriptionSection(),
-                        const SizedBox(height: 10),
-                        //button section
-                        buttonSection(),
-                        const SizedBox(height: 10),
-                        //products you may like
-                        productYouMayLike(),
-                      ],
-                    ).box.white.shadowSm.make(),
-                  ],
+                      const SizedBox(height: 10),
+                      //ratings
+                      ratings(data),
+                      const SizedBox(height: 10),
+                      //price
+                      price(data),
+                      const SizedBox(height: 10),
+                      // seller name and message box
+                      sellerNmessagebox(data),
+                      const SizedBox(height: 20),
+                      //color section
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //color
+                          colorSection(data),
+                          //quantity
+                          quantitySection(data),
+                          //total
+                          totalSection(data),
+                          const SizedBox(height: 10),
+                          //description
+                          descriptionSection(data),
+                          const SizedBox(height: 10),
+                          //button section
+                          buttonSection(data),
+                          const SizedBox(height: 10),
+                          //products you may like
+                          productYouMayLike(data),
+                        ],
+                      ).box.white.shadowSm.make(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          //add to cart
-          addToCardButton()
-        ],
+            //add to cart
+            addToCardButton(data, context),
+          ],
+        ),
       ),
     );
   }
 
-  SizedBox addToCardButton() {
+  //add to cart button
+  Widget addToCardButton(data, context) {
+    var productController = Get.find<ProductController>();
     return SizedBox(
       width: double.infinity,
       height: 60,
       child: ourButton(
         color: redColor,
-        onPress: () {},
+        onPress: () {
+          productController.addToCart(color: data['p_colors'][productController.colorIndex.value], context: context, img: data['p_images'][0], quantity: productController.quantity.value, sellername: data['p_seller'], title: data['p_name'], totalPrice: productController.totalPrice.value);
+          VxToast.show(context, msg: "Added to cart");
+        },
         textColor: whiteColor,
         title: "Add to cart",
       ),
@@ -92,7 +108,7 @@ class ItemDetails extends StatelessWidget {
   }
 
   //products you may like
-  Widget productYouMayLike() {
+  Widget productYouMayLike(data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,7 +172,7 @@ class ItemDetails extends StatelessWidget {
   }
 
   //button section
-  ListView buttonSection() {
+  ListView buttonSection(data) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -177,20 +193,21 @@ class ItemDetails extends StatelessWidget {
   }
 
   //description
-  Widget descriptionSection() {
-    return const Column(
+  Widget descriptionSection(data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "Description",
           style: TextStyle(
             color: darkFontGrey,
             fontFamily: semibold,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          "This is a dummy item and dummy description here... sadflkajsdfkjkalsdjfkljsadklfj kajsdlkfjkl jklajs dfkjlkasdj flkjkasd fkljsdklfj lkasdfj ",
-          style: TextStyle(
+          "${data['p_description']}",
+          style: const TextStyle(
             color: darkFontGrey,
           ),
         ),
@@ -199,35 +216,39 @@ class ItemDetails extends StatelessWidget {
   }
 
   //total section widget
-  Widget totalSection() {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              "Total: ",
-              style: TextStyle(
-                color: textfieldGrey,
+  Widget totalSection(data) {
+    var productController = Get.find<ProductController>();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Obx(
+        () => Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                "Total: ",
+                style: TextStyle(
+                  color: textfieldGrey,
+                ),
               ),
             ),
-          ),
-          Text(
-            "\$0.0",
-            style: TextStyle(
-              color: redColor,
-              fontSize: 16,
-              fontFamily: bold,
+            Text(
+              "Rs ${productController.totalPrice.value.numCurrency}",
+              style: const TextStyle(
+                color: redColor,
+                fontSize: 16,
+                fontFamily: bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   //quantity section widget
-  Widget quantitySection() {
+  Widget quantitySection(data) {
+    var productController = Get.find<ProductController>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -241,32 +262,40 @@ class ItemDetails extends StatelessWidget {
               ),
             ),
           ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.remove),
-              ),
-              const Text(
-                "0",
-                style: TextStyle(
-                  color: darkFontGrey,
-                  fontSize: 16,
-                  fontFamily: bold,
+          Obx(
+            () => Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    productController.decreaseQuantity();
+                    productController.calculateTotalPrice(int.parse(data['p_price']));
+                  },
+                  icon: const Icon(Icons.remove),
                 ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                "(0 available)",
-                style: TextStyle(
-                  color: textfieldGrey,
+                Text(
+                  productController.quantity.value.toString(),
+                  style: const TextStyle(
+                    color: darkFontGrey,
+                    fontSize: 16,
+                    fontFamily: bold,
+                  ),
                 ),
-              ),
-            ],
+                IconButton(
+                  onPressed: () {
+                    productController.increaseQuantity(int.parse(data['p_quantity']));
+                    productController.calculateTotalPrice(int.parse(data['p_price']));
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  "(${data['p_quantity']} available)",
+                  style: const TextStyle(
+                    color: textfieldGrey,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -274,41 +303,58 @@ class ItemDetails extends StatelessWidget {
   }
 
   //color section widget
-  Widget colorSection() {
+  Widget colorSection(data) {
+    var productController = Get.find<ProductController>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 100,
-            child: Text(
-              "Color: ",
-              style: TextStyle(
-                color: textfieldGrey,
-              ),
-            ),
-          ),
-          Row(
-            children: List.generate(
-              3,
-              (index) => Container(
-                width: 40,
-                height: 40,
-                margin: const EdgeInsets.symmetric(horizontal: 6.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Vx.randomPrimaryColor,
+      child: Obx(
+        () => Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                "Color: ",
+                style: TextStyle(
+                  color: textfieldGrey,
                 ),
               ),
             ),
-          ),
-        ],
+            Row(
+              children: List.generate(
+                data['p_colors'].length,
+                (index) => Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        productController.changeColorIndex(index);
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        margin: const EdgeInsets.symmetric(horizontal: 6.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(data['p_colors'][index]).withOpacity(1.0),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: index == productController.colorIndex.value,
+                      child: const Icon(Icons.done, color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   // seller name and message box
-  Widget sellerNmessagebox() {
+  Widget sellerNmessagebox(data) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       height: 60,
@@ -352,10 +398,10 @@ class ItemDetails extends StatelessWidget {
   }
 
   //price
-  Widget price() {
-    return const Text(
-      "\$30,000",
-      style: TextStyle(
+  Widget price(data) {
+    return Text(
+      "Rs ${data['p_price'].toString().numCurrency}",
+      style: const TextStyle(
         fontSize: 18,
         color: redColor,
         fontFamily: bold,
@@ -364,27 +410,30 @@ class ItemDetails extends StatelessWidget {
   }
 
 //ratings
-  Widget ratings() {
+  Widget ratings(data) {
     return VxRating(
+      isSelectable: false,
+      value: double.parse(data['p_rating']),
       onRatingUpdate: (value) {},
       normalColor: textfieldGrey,
       selectionColor: golden,
       count: 5,
       size: 25,
-      stepInt: true,
+      maxRating: 5,
     );
   }
 
   //image swiper
-  Widget imageSwiper() {
+  Widget imageSwiper(data) {
     return VxSwiper.builder(
       autoPlay: true,
       height: 350,
-      itemCount: 3,
+      itemCount: data['p_images'].length,
       aspectRatio: 16 / 9,
+      viewportFraction: 1.0,
       itemBuilder: (context, index) {
-        return Image.asset(
-          imgFc5,
+        return Image.network(
+          data['p_images'][index],
           width: double.infinity,
           fit: BoxFit.cover,
         );
@@ -394,7 +443,15 @@ class ItemDetails extends StatelessWidget {
 
 //appbar
   AppBar appBar() {
+    var productController = Get.find<ProductController>();
     return AppBar(
+      leading: IconButton(
+        onPressed: () {
+          productController.resetValues();
+          Get.back();
+        },
+        icon: const Icon(Icons.arrow_back),
+      ),
       title: Text(
         title!,
         style: const TextStyle(

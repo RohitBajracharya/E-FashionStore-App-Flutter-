@@ -11,6 +11,8 @@ class HomeController extends GetxController {
 
   var username = '';
 
+  var searchController = TextEditingController();
+
   //get curren username
   getUsername() async {
     var n = await firestore.collection(usersCollection).where('id', isEqualTo: currentUser!.uid).get().then((value) {

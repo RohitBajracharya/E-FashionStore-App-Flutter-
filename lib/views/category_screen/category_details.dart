@@ -7,7 +7,7 @@ import 'package:ecommerce_app/controller/product_controller.dart';
 import 'package:ecommerce_app/services/firestore_services.dart';
 import 'package:ecommerce_app/views/category_screen/item_details.dart';
 
-class CategoryDetails extends StatelessWidget {
+class CategoryDetails extends StatefulWidget {
   final String? title;
   const CategoryDetails({
     Key? key,
@@ -15,39 +15,63 @@ class CategoryDetails extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CategoryDetails> createState() => _CategoryDetailsState();
+}
+
+class _CategoryDetailsState extends State<CategoryDetails> {
+  @override
+  void initState() {
+    super.initState();
+    switchCategory(widget.title);
+  }
+
+  switchCategory(title) {
+    if (productController.subCat.contains(title)) {
+      productMethod = FiresstoreServices.getSubCategoryProducts(title);
+    } else {
+      productMethod = FiresstoreServices.getProducts(title);
+    }
+  }
+
+  var productController = Get.find<ProductController>();
+  dynamic productMethod;
+
+  @override
   Widget build(BuildContext context) {
     return bgWidget(
       child: Scaffold(
         appBar: appBar(),
-        body: StreamBuilder(
-          stream: FiresstoreServices.getProducts(title),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: loadingIndicator());
-            } else if (snapshot.data!.docs.isEmpty) {
-              return const Center(
-                child: Text(
-                  "No products found",
-                  style: TextStyle(color: darkFontGrey),
-                ),
-              );
-            } else {
-              var data = snapshot.data!.docs;
-              return Container(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //sub categories list
-                    subCategories(),
-                    const SizedBox(height: 20),
-                    //product items card
-                    productItemsCard(data),
-                  ],
-                ),
-              );
-            }
-          },
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              //sub categories list
+              subCategories(),
+              const SizedBox(height: 20),
+              StreamBuilder(
+                stream: productMethod,
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Expanded(child: Center(child: loadingIndicator()));
+                  } else if (snapshot.data!.docs.isEmpty) {
+                    return const Expanded(
+                      child: Center(
+                        child: Text(
+                          "No products found",
+                          style: TextStyle(color: darkFontGrey),
+                        ),
+                      ),
+                    );
+                  } else {
+                    var data = snapshot.data!.docs;
+                    return productItemsCard(data);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -134,22 +158,28 @@ class CategoryDetails extends StatelessWidget {
       child: Row(
         children: List.generate(
           productController.subCat.length,
-          (index) => Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
-              shape: BoxShape.rectangle,
-            ),
-            width: 120,
-            height: 60,
-            margin: const EdgeInsetsDirectional.symmetric(horizontal: 4.0),
-            child: Center(
-              child: Text(
-                productController.subCat[index].toString(),
-                style: const TextStyle(
-                  fontFamily: semibold,
-                  color: darkFontGrey,
-                  fontSize: 12,
+          (index) => InkWell(
+            onTap: () {
+              switchCategory(productController.subCat[index].toString());
+              setState(() {});
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                shape: BoxShape.rectangle,
+              ),
+              width: 120,
+              height: 60,
+              margin: const EdgeInsetsDirectional.symmetric(horizontal: 4.0),
+              child: Center(
+                child: Text(
+                  productController.subCat[index].toString(),
+                  style: const TextStyle(
+                    fontFamily: semibold,
+                    color: darkFontGrey,
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ),
@@ -163,7 +193,7 @@ class CategoryDetails extends StatelessWidget {
   AppBar appBar() {
     return AppBar(
       title: Text(
-        title!,
+        widget.title!,
         style: const TextStyle(
           fontFamily: bold,
           color: Colors.white,

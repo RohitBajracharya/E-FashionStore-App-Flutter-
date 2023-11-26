@@ -65,3 +65,7 @@ const itemDetailButtonList = [video, reviews, privacyPolicy, returnPolicy, suppo
 //profile button list
 const profileButtonsList = [orders, wishlist, messages];
 const profileButtonsIcon = [icOrder, icOrder, icMessages];
+
+//payment method
+const paymentMethodsImg = [imgPaypal, imgKhalti, imgCod];
+const paymentMethods = [paypal, khalti, cod];

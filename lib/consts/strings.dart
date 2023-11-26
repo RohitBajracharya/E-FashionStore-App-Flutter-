@@ -68,3 +68,6 @@ const newpass = "New password";
 
 const loggedin = "Logged in Succesfully";
 const loggedout = "Logged out Succesfully";
+
+//payment method strings
+const paypal = "Paypal", khalti = "Khalti", cod = "Cash on delivery";

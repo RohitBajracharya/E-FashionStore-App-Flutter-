@@ -2,6 +2,7 @@
 import 'package:ecommerce_app/common_widgets/our_button.dart';
 import 'package:ecommerce_app/consts/consts.dart';
 import 'package:ecommerce_app/controller/product_controller.dart';
+import 'package:ecommerce_app/views/chat_screen/chat_screen.dart';
 
 class ItemDetails extends StatelessWidget {
   final String? title;
@@ -23,7 +24,7 @@ class ItemDetails extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: lightGrey,
-        appBar: appBar(),
+        appBar: appBar(context),
         body: Column(
           children: [
             Expanded(
@@ -359,9 +360,9 @@ class ItemDetails extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       height: 60,
       color: textfieldGrey,
-      child: const Row(
+      child: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -387,11 +388,16 @@ class ItemDetails extends StatelessWidget {
           ),
           CircleAvatar(
             backgroundColor: Colors.white,
-            child: Icon(
+            child: const Icon(
               Icons.message_rounded,
               color: darkFontGrey,
-            ),
-          )
+            ).onTap(() {
+              Get.to(
+                () => const ChatScreen(),
+                arguments: [data['p_seller'], data['vendor_id']],
+              );
+            }),
+          ),
         ],
       ),
     );
@@ -442,7 +448,7 @@ class ItemDetails extends StatelessWidget {
   }
 
 //appbar
-  AppBar appBar() {
+  AppBar appBar(context) {
     var productController = Get.find<ProductController>();
     return AppBar(
       leading: IconButton(
@@ -464,9 +470,20 @@ class ItemDetails extends StatelessWidget {
           onPressed: () {},
           icon: const Icon(Icons.share),
         ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.favorite_outline),
+        Obx(
+          () => IconButton(
+            onPressed: () {
+              if (productController.isFav.value) {
+                productController.removeFromWishlist(data.id, context);
+              } else {
+                productController.addToWishlist(data.id, context);
+              }
+            },
+            icon: Icon(
+              Icons.favorite_outlined,
+              color: productController.isFav.value ? redColor : darkFontGrey,
+            ),
+          ),
         ),
       ],
     );

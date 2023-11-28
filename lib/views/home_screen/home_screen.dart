@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                     todayDealsNflashSale(),
                     const SizedBox(height: 10),
                     //second sliders
-                    swipersBrand(secondSlidersList),
+                    // swipersBrand(secondSlidersList),
                     const SizedBox(height: 10),
                     //top categories,brand and top sellers button
                     categoriesBrandSellersButton(),

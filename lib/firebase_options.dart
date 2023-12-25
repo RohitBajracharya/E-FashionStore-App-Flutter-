@@ -44,37 +44,37 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAfCxXfg2eKKJZr7bV4aCzw2KDYQyr1jU8',
-    appId: '1:515815860191:web:7f58d94a4d7e605d1bc66a',
-    messagingSenderId: '515815860191',
-    projectId: 'emart-5f2f7',
-    authDomain: 'emart-5f2f7.firebaseapp.com',
-    storageBucket: 'emart-5f2f7.appspot.com',
+    apiKey: 'AIzaSyBfGbha24e4vqaYUX1aj3AbJUGEYZR4klM',
+    appId: '1:526267361991:web:f7b072fe65385cea7f2ce2',
+    messagingSenderId: '526267361991',
+    projectId: 'emart-b30ae',
+    authDomain: 'emart-b30ae.firebaseapp.com',
+    storageBucket: 'emart-b30ae.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBqnVqAIWENCOWOSb1dUx-oc5b2KMgCnAI',
-    appId: '1:515815860191:android:c3bd8ab00ddba0361bc66a',
-    messagingSenderId: '515815860191',
-    projectId: 'emart-5f2f7',
-    storageBucket: 'emart-5f2f7.appspot.com',
+    apiKey: 'AIzaSyA44kZQTZNzRWfv4m7uA7qPkz49E_BSFBE',
+    appId: '1:526267361991:android:283a13dfc29c63197f2ce2',
+    messagingSenderId: '526267361991',
+    projectId: 'emart-b30ae',
+    storageBucket: 'emart-b30ae.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBTvTi_NzD1zY3VHWlRlyM8vD0Ecd4x6fA',
-    appId: '1:515815860191:ios:6a4d3021969cbb791bc66a',
-    messagingSenderId: '515815860191',
-    projectId: 'emart-5f2f7',
-    storageBucket: 'emart-5f2f7.appspot.com',
+    apiKey: 'AIzaSyBTYE7_TzixGQ8oO-_mVl6_L77cyd83GsI',
+    appId: '1:526267361991:ios:2548ec0fa7c2e90a7f2ce2',
+    messagingSenderId: '526267361991',
+    projectId: 'emart-b30ae',
+    storageBucket: 'emart-b30ae.appspot.com',
     iosBundleId: 'com.example.ecommerceApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBTvTi_NzD1zY3VHWlRlyM8vD0Ecd4x6fA',
-    appId: '1:515815860191:ios:22753d21fc7179221bc66a',
-    messagingSenderId: '515815860191',
-    projectId: 'emart-5f2f7',
-    storageBucket: 'emart-5f2f7.appspot.com',
+    apiKey: 'AIzaSyBTYE7_TzixGQ8oO-_mVl6_L77cyd83GsI',
+    appId: '1:526267361991:ios:6ba8fbe73238b67e7f2ce2',
+    messagingSenderId: '526267361991',
+    projectId: 'emart-b30ae',
+    storageBucket: 'emart-b30ae.appspot.com',
     iosBundleId: 'com.example.ecommerceApp.RunnerTests',
   );
 }

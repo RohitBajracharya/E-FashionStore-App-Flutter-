@@ -1,4 +1,5 @@
-const appname = "e-Mart";
+const appname = "Clowear";
+const appTypes = "E-Fashion Store";
 const appversion = "Version 1.0.0";
 const credits = "@RBajra";
 
@@ -30,25 +31,17 @@ const topSellers = "Top Sellers";
 const brand = "Brand";
 const topCategories = "Top Categories";
 const featuredCategories = "Featured Categories";
-const womenDress = "Women Dress";
-const girlsWatches = "Girls Watches";
-const mobilePhone = "Mobile Phones";
-const boysGlasses = "Boys Glasses";
-const tShirts = "TShirts";
-const girlsDress = "Girls Dresses";
+
+//categories
+const shirts = "Shirts";
+const jackets = "Jackets";
+const pants = "Pants";
+const shorts = "Shorts";
+const coats = "Coats";
+const accessories = "Accessories";
+const footwear = "Footwear";
 const featuredProduct = "Featured Product";
 const allProduct = "All Products";
-
-//categories strings
-const womenClothing = "Women Clothing";
-const menClothingFashion = "Men Clothing & Fashion";
-const compAccess = "Computer & Accessories";
-const automobile = "Automobile";
-const kidtoys = "Kids & Toys";
-const sports = "Sports";
-const jewelery = "Jewelery";
-const cellphone = "Cellphone & Tab";
-const furniture = "Furniture";
 
 //item details strings
 const video = "Video";

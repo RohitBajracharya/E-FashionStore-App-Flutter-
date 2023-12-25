@@ -51,15 +51,14 @@ const slidersList = [imgSlider1, imgSlider2, imgSlider3, imgSlider4];
 const secondSlidersList = [imgSs1, imgSs2, imgSs3, imgSs4];
 
 //featured categories images and titles list
-const featuredImages1 = [imgS1, imgS2, imgS3];
-const featuredImages2 = [imgS4, imgS5, imgS6];
-const featuresTitles1 = [womenDress, girlsDress, girlsWatches];
-const featuresTitles2 = [boysGlasses, mobilePhone, tShirts];
+const featuredImages1 = [imgS1, imgS3, imgS5];
+const featuredImages2 = [imgS2, imgS4, imgS7];
+const featuresTitles1 = [shirts, jackets, coats];
+const featuresTitles2 = [pants, shorts, footwear];
 
 //categories list
-const categoriesList = [womenDress, menClothingFashion, compAccess, automobile, kidtoys, sports, jewelery, cellphone, furniture];
-const categoriesImages = [imgS1, imgFc1, imgFc2, imgFc3, imgFc4, imgFc5, imgS11, imgFc6, imgFc9];
-
+const categoriesList = [shirts, pants, jackets, shorts, coats, accessories, footwear];
+const categoriesImages = [imgS1, imgS2, imgS3, imgS4, imgS5, imgS6, imgS7];
 const itemDetailButtonList = [video, reviews, privacyPolicy, returnPolicy, supportPolicy];
 
 //profile button list
